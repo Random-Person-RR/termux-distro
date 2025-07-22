@@ -822,11 +822,7 @@ create_rootfs_launcher() {
 		# Setup the default environment
 		proot_args+=("/usr/bin/env" "-i" "\${env_vars[@]}")
 
-		# Enable audio support in distro (for root users, add option '--system')
-		if ! pidof -q pulseaudio >/dev/null 2>&1; then
-		    pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
-		fi
-
+		
 		# Execute launch command
 		exec proot "\${proot_args[@]}" "\${@}"
 	EOF
