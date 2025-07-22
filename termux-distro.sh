@@ -232,6 +232,11 @@ create_rootfs_launcher() {
 	mkdir -p "$(dirname "${DISTRO_LAUNCHER}")" >>"${LOG_FILE}" 2>&1 && cat >"${DISTRO_LAUNCHER}" 2>>"${LOG_FILE}" <<-EOF
 		#!${TERMUX_FILES_DIR}/usr/bin/bash
 
+                pkill -9 pulseaudio
+                pulseaudio -v -D --start #Add --system if on root
+                pacmd load-module module-aaudio-sink
+                pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+  
 		################################################################################
 		#                                                                              #
 		# $(
@@ -262,6 +267,7 @@ create_rootfs_launcher() {
 		    "LANG=C.UTF-8"
 		    "TERM=\${TERM:-xterm-256color}"
 		    "PATH=${DEFAULT_PATH}:${TERMUX_FILES_DIR}/usr/local/bin:${TERMUX_FILES_DIR}/usr/bin"
+                    "PULSE_SERVER=127.0.0.1"
 		)
 		custom_ids=""
 		isolated_env=false
