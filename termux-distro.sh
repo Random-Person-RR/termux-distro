@@ -233,7 +233,7 @@ create_rootfs_launcher() {
 		#!${TERMUX_FILES_DIR}/usr/bin/bash
 
                 pkill -9 pulseaudio
-                pulseaudio -v -D --start #Add --system if on root
+                pulseaudio -v -D --start --exit-idle-time=-1 #Add --system if on root
                 pacmd load-module module-aaudio-sink
                 pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
   
